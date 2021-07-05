@@ -361,7 +361,10 @@ void printBoard()
 			}
 		}
 		cout << endl;
-		cout << " " <<" --- " << " --- ";
+		if (i != 2)
+		{
+			cout << " " << " --- " << " --- ";
+		}
 		cout << endl;
 	}
 	cout << endl;
