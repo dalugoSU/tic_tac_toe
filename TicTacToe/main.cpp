@@ -6,6 +6,8 @@
 
 using namespace std;
 
+// TODO: Use classes - OO
+
 // Create Board 3 X 3 array empty
 // get input for row and column to place marks
 // Create const for X and O marks
