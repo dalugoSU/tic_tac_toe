@@ -298,7 +298,7 @@ bool updateBoard(int row, int col, char player)
 		Handles if choice is out of range in board
 	*/
 
-	if (row < 0 || row > 3 || col < 0 || col > 3)
+	if (row < 1 || row > 3 || col < 1 || col > 3)
 	{
 		cout << "Invalid range" << endl;
 		return false;
@@ -363,7 +363,7 @@ void printBoard()
 		cout << endl;
 		if (i != 2)
 		{
-			cout << " " << " --- " << " --- ";
+			cout << " " << "----------";
 		}
 		cout << endl;
 	}
