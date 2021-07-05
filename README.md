@@ -2,7 +2,7 @@
 
 Simple CLI Tic Tac Toe game in C++
 
-![alt text](example_game.JPEG)
+![Alt text](example_game.JPEG?raw=true "Example Command")
 
 ### Playing Options ###
 
