@@ -266,8 +266,7 @@ bool computerGame()
 			int randomNumCol = rand() % 3 + 1; // random between 1 - 3
 			computerChoiceCol = randomNumCol;
 
-			bool twoTrial = updateBoard(computerChoiceRow, computerChoiceCol, '2');
-			if (twoTrial == false)
+			if (!updateBoard(computerChoiceRow, computerChoiceCol, '2'))
 			{
 				continue;
 			}
