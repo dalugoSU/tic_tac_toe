@@ -2,6 +2,7 @@
 #include <ctime>
 #include <random>
 #include <string>
+#include <limits>
 
 using namespace std;
 
@@ -13,21 +14,15 @@ bool updateBoard(int row, int col, char player);
 void printBoard();
 bool checkBoardComp();
 bool checkWin();
+void getPlayerMove(int& row, int& col, string player);
 
 // Game Mode
-int twoPlayerGame();
-int computerGame();
+bool twoPlayerGame();
+bool computerGame();
 
 // Constants
 const char X_CHAR = 'X';
 const char O_CHAR = 'O';
-
-/*
-Winning combinatinons
-straight horizontal
-straight vertical
-diagonal
-*/
 
 // Game Board
 char board[3][3]{
@@ -35,10 +30,6 @@ char board[3][3]{
 	{' ', ' ', ' '},
 	{' ', ' ', ' '}
 };
-
-// Player won
-// Counter for win
-bool playerWon = false;
 
 // Game type
 char gameType;
@@ -54,16 +45,14 @@ int main()
 	{
 		if (gameType == '1')
 		{
-			int complete = twoPlayerGame();
-			if (complete == 0)
+			if (twoPlayerGame())
 			{
 				break;
 			}
 		}
 		else if (gameType == '2')
 		{
-			int complete = computerGame();
-			if (complete == 0)
+			if (computerGame())
 			{
 				break;
 			}
@@ -82,7 +71,7 @@ int main()
 	return 0;
 }
 
-int twoPlayerGame()
+bool twoPlayerGame()
 {
 	// Player names
 	string playerOne;
@@ -113,14 +102,12 @@ int twoPlayerGame()
 
 	while (true)
 	{
-		bool boardFull = checkBoardComp();
-
-		if (playerWon)
+		if (checkWin())
 		{
 			break;
 		}
 
-		if (boardFull)
+		if (checkBoardComp())
 		{
 			cout << "The board is filled!" << endl;
 			cout << "Game has finished - no Winner!" << endl;
@@ -129,19 +116,16 @@ int twoPlayerGame()
 
 		while (true)
 		{
-			cout << playerOne << ", " << "Enter row and col of where you want to place your X: ";
-			cin >> playerOneChoiceRow;
-			cin >> playerOneChoiceCol;
-			bool trial = updateBoard(playerOneChoiceRow, playerOneChoiceCol, '1');
-			if (trial == false)
+			getPlayerMove(playerOneChoiceRow, playerOneChoiceCol, playerOne);
+			
+			if (!updateBoard(playerOneChoiceRow, playerOneChoiceCol, '1'))
 			{
 				continue;
 			}
 			else
 			{
-				playerWon = checkWin();
 				printBoard();
-				if (playerWon == true)
+				if (checkWin())
 				{
 					cout << endl << endl << "CONGRATULATIONS! " << playerOne << " WINS!" << endl;
 					break;
@@ -153,13 +137,12 @@ int twoPlayerGame()
 			}
 		}
 
-		if (playerWon)
+		if (checkWin())
 		{
 			break;
 		}
 
-		boardFull = checkBoardComp();
-		if (boardFull)
+		if (checkBoardComp())
 		{
 			cout << "The board is filled!" << endl;
 			cout << "Game has finished - no Winner!" << endl;
@@ -168,19 +151,16 @@ int twoPlayerGame()
 
 		while (true)
 		{
-			cout << playerTwo << ", " << "Enter row and col of where you want to place your 0: ";
-			cin >> playerTwoChoiceRow;
-			cin >> playerTwoChoiceCol;
-			bool twoTrial = updateBoard(playerTwoChoiceRow, playerTwoChoiceCol, '2');
-			if (twoTrial == false)
+			getPlayerMove(playerTwoChoiceRow, playerTwoChoiceCol, playerTwo);
+
+			if (!updateBoard(playerTwoChoiceRow, playerTwoChoiceCol, '2'))
 			{
 				continue;
 			}
 			else
 			{
-				playerWon = checkWin();
 				printBoard();
-				if (playerWon == true)
+				if (checkWin())
 				{
 					cout << endl << endl << "CONGRATULATIONS! " << playerTwo << " WINS!" << endl;
 					break;
@@ -192,10 +172,10 @@ int twoPlayerGame()
 			}
 		}
 	}
-	return 0;
+	return true;
 }
 
-int computerGame()
+bool computerGame()
 {
 	// Random num for computer
 	srand(time(nullptr));
@@ -226,14 +206,12 @@ int computerGame()
 
 	while (true)
 	{
-		bool boardFull = checkBoardComp();
-
-		if (playerWon)
+		if (checkWin())
 		{
 			break;
 		}
 
-		if (boardFull)
+		if (checkBoardComp())
 		{
 			cout << "The board is filled!" << endl;
 			cout << "Game has finished - no Winner!" << endl;
@@ -242,19 +220,16 @@ int computerGame()
 
 		while (true)
 		{
-			cout << playerOne << ", " << "Enter row and col of where you want to place your X: ";
-			cin >> playerOneChoiceRow;
-			cin >> playerOneChoiceCol;
-			bool trial = updateBoard(playerOneChoiceRow, playerOneChoiceCol, '1');
-			if (trial == false)
+			getPlayerMove(playerOneChoiceRow, playerOneChoiceCol, playerOne);
+
+			if (!updateBoard(playerOneChoiceRow, playerOneChoiceCol, '1'))
 			{
 				continue;
 			}
 			else
 			{
-				playerWon = checkWin();
 				printBoard();
-				if (playerWon == true)
+				if (checkWin())
 				{
 					cout << endl << endl << "CONGRATULATIONS! " << playerOne << " WINS!" << endl;
 					break;
@@ -266,13 +241,12 @@ int computerGame()
 			}
 		}
 
-		if (playerWon)
+		if (checkWin())
 		{
 			break;
 		}
 
-		boardFull = checkBoardComp();
-		if (boardFull)
+		if (checkBoardComp())
 		{
 			cout << "The board is filled!" << endl;
 			cout << "Game has finished - no Winner!" << endl;
@@ -297,9 +271,8 @@ int computerGame()
 			}
 			else
 			{
-				playerWon = checkWin();
 				printBoard();
-				if (playerWon == true)
+				if (checkWin())
 				{
 					cout << endl << endl << "COMPUTER WINS! You lost..." << endl;
 					break;
@@ -311,12 +284,18 @@ int computerGame()
 			}
 		}
 	}
-	return 0;
-
+	return true;
 }
+
+// >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> HELPER FUNCTIONS >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
 bool updateBoard(int row, int col, char player)
 {
+	/*
+		Uptade the board with player moves
+		Handles whether a spot is taken
+		Handles if choice is out of range in board
+	*/
 
 	if (row < 0 || row > 3 || col < 0 || col > 3)
 	{
@@ -362,6 +341,10 @@ bool updateBoard(int row, int col, char player)
 
 void printBoard()
 {
+	/*
+		Print the game board
+		Updates through the game
+	*/
 	cout << endl << endl;
 	for (int i = 0; i < 3; i++)
 	{
@@ -385,6 +368,10 @@ void printBoard()
 
 bool checkBoardComp()
 {
+	/*
+		Checks wether the board
+		Has been filled or not
+	*/
 	int summ = 0;
 
 	for (int i = 0; i < 3; i++)
@@ -406,6 +393,12 @@ bool checkBoardComp()
 
 bool checkWin()
 {
+	/*
+		Checks for winner
+		Checks horizontal
+		Checks vertical
+		Checks diagonal
+	*/
 	int checkX = 0;
 	int checkO = 0;
 
@@ -486,5 +479,36 @@ bool checkWin()
 	else
 	{
 		return false;
+	}
+}
+
+void getPlayerMove(int& row, int& col, string player)
+{
+	/*
+		Get Player move
+		Handles bad input
+	*/
+	while (true)
+	{
+		cout << player << ", " << "Enter row of where you want to place your X: ";
+		cin >> row;
+		if (!cin)
+		{
+			cout << "Invalid!" << endl;
+			cin.clear();
+			cin.get();
+			continue;
+		}
+
+		cout << player << ", " << "Enter col of where you want to place your X: ";
+		cin >> col;
+		if (!cin)
+		{
+			cout << "Invalid!" << endl;
+			cin.clear();
+			cin.get();
+			continue;
+		}
+		break;
 	}
 }
